@@ -30,28 +30,22 @@ def export_to_json(user_id):
     username = user_data.get("username")
     json_filename = "{}.json".format(user_id)
 
-    if isinstance(tasks_data, list) and all(isinstance(task, dict) for task in tasks_data):
-        user_tasks = {
-            str(user_id): [
-                {
-                    "task": task.get("title"),
-                    "completed": task.get("completed"),
-                    "username": username
-                }
-                for task in tasks_data
-            ]
-        }
+    user_tasks = {
+        str(user_id): [
+            {
+                "task": task.get("title"),
+                "completed": task.get("completed"),
+                "username": username
+            }
+            for task in tasks_data
+        ]
+    }
 
-        with open(json_filename, mode='w') as json_file:
-            json.dump(user_tasks, json_file)
+    with open(json_filename, mode='w') as json_file:
+        json.dump(user_tasks, json_file)
 
-        print("Data exported to {}".format(json_filename))
-    else:
-        print("Error: Invalid data format from tasks API")
+    print("Data exported to {}".format(json_filename))
 
 
 if __name__ == "__main__":
-    if len(argv) != 2:
-        print("Usage: {} <user_id>".format(argv[0]))
-    else:
-        export_to_json(argv[1])
+    export_to_json(argv[1])
