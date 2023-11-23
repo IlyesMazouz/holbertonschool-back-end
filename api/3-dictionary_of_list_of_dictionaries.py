@@ -39,23 +39,23 @@ def check_student_output():
     with open('todo_all_employees.json', 'r') as f:
         student_output = json.load(f)
 
-    error = False
-    for correct_key, correct_entry in fetch_user_info().items():
-        flag = 0
-        for student_key, student_entry in student_output.items():
-            if str(correct_key) == str(student_key):
-                flag = 1
-                message = "User ID {} Tasks: Incorrect".format(
-                    str(correct_key))
-                print(message)
-                error = True
-        if flag == 0:
-            message = "User ID {}: Not found".format(str(correct_key))
-            print(message)
-            error = True
+    correct_output = fetch_user_info()
 
-    if not error:
+    all_users_exist = all(str(correct_key) in student_output
+                          for correct_key in correct_output.keys())
+
+    if all_users_exist:
+        print("All users found: OK")
+    else:
+        print("Some users are missing in the output")
+
+    all_tasks_correct = all(student_output[str(correct_key)] == correct_entry
+                            for correct_key, correct_entry in correct_output.items())
+
+    if all_tasks_correct:
         print("User ID and Tasks output: OK")
+    else:
+        print("Tasks are incorrect for some User IDs")
 
 
 if __name__ == "__main__":
