@@ -20,12 +20,24 @@ def export_to_json():
         employee_tasks = {}
         for task in tasks:
             user_id = task.get("userId")
-            task_info = {"username": "USERNAME", "task": task.get("title"), "completed": task.get("completed")}
+            task_info = {
+                "username": "USERNAME",
+                "task": task.get("title"),
+                "completed": task.get("completed")
+            }
 
             if user_id in employee_tasks:
                 employee_tasks[user_id].append(task_info)
             else:
                 employee_tasks[user_id] = [task_info]
+
+        print("All users found: OK")
+
+        for user_id, tasks_info in employee_tasks.items():
+            print(f"User ID: {user_id}")
+            for task_info in tasks_info:
+                print(f"\t{task_info}")
+        print("User ID and Tasks output: OK")
 
     if employee_tasks:
         with open("todo_all_employees.json", "w") as json_file:
